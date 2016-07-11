@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<style>
+    .hide{
+        display: none;
+    }
+    .show{
+        display: inline-block;
+    }
+</style>
+<body onload="loadProvince()">
+<h1>实现级联下拉列表</h1>
+<div>
+    <select id="province" onchange="change1(this.value);">
+        <option value="-1">-请选择-</option>
+    </select>
+    <select id="city" class="hide">
+        <option value="-1">-请选择-</option>
+    </select>
+</div>
+</body>
+<script type="text/javascript">
+    var provinceList = ['北京市', '河北省', '浙江省'];
+    var cityList = [['东城区','西城区','海淀区'], ['廊坊市','唐山市','石家庄市','承德市'], ['杭州市','温州市','宁波市','嘉兴市','绍兴市']];
+
+    //页面加载完成时，加载省份信息
+    function loadProvince(){
+        var provinceBtn = document.getElementById("province");
+        //生成省份下拉框
+        for(var i = 0;i<provinceList.length;i++){
+            var shengOpt = document.createElement("option");
+            shengOpt.text = provinceList[i]; //  shengOpt.innerHTML = provinceList[i];
+            shengOpt.value = i; //  shengOpt.setAttribute('value',i);
+            provinceBtn.appendChild(shengOpt);
+        }
+    }
+
+    function change1(obj){
+        var cityBtn = document.getElementById("city");
+        if(obj == -1){
+            cityBtn.setAttribute("class","hide");
+        }else{
+            cityBtn.setAttribute("class","show");
+
+            //先删除city中已有的option
+            while(cityBtn.children.length > 1){
+                cityBtn.removeChild(cityBtn.lastElementChild); //从后往前删除  一直删除select中的最后一个元素子节点
+            }
+
+            //找到该省份对应地级市数组，添加到cityBtn
+            var city = cityList[obj];
+            console.log(city);
+
+            for(var i =0;i<city.length;i++){
+                var cityOpt = document.createElement("option");
+                cityOpt.text = city[i];
+                cityOpt.value = i;
+                cityBtn.appendChild(cityOpt);
+            }
+        }
+    }
+</script>
+</html>
